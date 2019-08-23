@@ -9,12 +9,31 @@ group = 'spring.boot.admin'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+                'Implementation-Version': version,
+                'Main-Class': 'spring.boot.admin.springbootadminserver.SpringBootAdminServerApplication'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 repositories {
     mavenCentral()
 }
 
 ext {
     set('springBootAdminVersion', "2.1.5")
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'src/main/java/spring/boot/admin/springbootadminserver/SpringBootAdminServerApplication.java'
+        )
+    }
 }
 
 dependencies {
